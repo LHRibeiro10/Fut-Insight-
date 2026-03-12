@@ -226,15 +226,9 @@ filtros avançados de jogadores
 
 gráficos mais completos
 
-comparação entre campanhas
-
 exportação de dados
 
 melhorias de responsividade
-
-integração com banco de dados
-
-autenticação de usuário
 
 sincronização em nuvem
 
