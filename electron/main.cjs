@@ -1,8 +1,10 @@
 const { app, BrowserWindow } = require("electron");
 const path = require("path");
+const { pathToFileURL } = require("url");
 
 let splash;
 let mainWindow;
+let apiServerPromise;
 
 function createSplash() {
   splash = new BrowserWindow({
@@ -76,7 +78,7 @@ function createMainWindow() {
   if (process.env.VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(process.env.VITE_DEV_SERVER_URL);
   } else {
-    mainWindow.loadFile(path.join(__dirname, "../dist/index.html"));
+    mainWindow.loadURL("http://127.0.0.1:3001");
   }
 
   mainWindow.once("ready-to-show", () => {
@@ -87,7 +89,27 @@ function createMainWindow() {
   });
 }
 
-app.whenReady().then(() => {
+async function ensureApiServer() {
+  if (apiServerPromise) {
+    return apiServerPromise;
+  }
+
+  const serverModuleUrl = pathToFileURL(
+    path.join(__dirname, "../server/app.mjs")
+  ).href;
+
+  apiServerPromise = import(serverModuleUrl)
+    .then(({ startServer }) => startServer({ port: 3001 }))
+    .catch((error) => {
+      console.error("Falha ao iniciar API local:", error);
+      throw error;
+    });
+
+  return apiServerPromise;
+}
+
+app.whenReady().then(async () => {
+  await ensureApiServer();
   createSplash();
   createMainWindow();
 

@@ -279,6 +279,7 @@ Antes de começar, você precisa ter instalado:
 git clone https://github.com/LHRibeiro10/Fut-Insight-.git
 cd Fut-Insight-
 
+---
 ## Como executar o projeto
 
 1. Clone o repositório

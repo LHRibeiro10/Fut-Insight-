@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { formatDate, getResultColor, getResultLabel } from '../src/utils/format.js';
+import { formatDate, getResultColor, getResultLabel } from '../src/shared/lib/format.js';
 
 test('formatDate converte yyyy-mm-dd para dd/mm/yyyy', () => {
   assert.equal(formatDate('2026-03-10'), '10/03/2026');

@@ -9,7 +9,7 @@ import {
   pickBestMatch,
   searchPlayersLocally,
   similarityScore,
-} from '../src/utils/searchUtils.js';
+} from '../src/shared/lib/searchUtils.js';
 
 const players = [
   { id: 1, name: 'Vinicius Jr.', club: 'Real Madrid', position: 'PE' },

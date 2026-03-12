@@ -8,7 +8,7 @@ import {
   getRatingTrend,
   getRollingWinRate,
   getTopPerformers,
-} from '../src/utils/stats.js';
+} from '../src/shared/lib/stats.js';
 
 const players = [
   { id: 'p1', name: 'Henry' },

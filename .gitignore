@@ -7,3 +7,5 @@ release/
 .env
 .env.*
 .DS_Store
+server/data/*.sqlite
+server/data/*.sqlite-*
