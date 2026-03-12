@@ -1,298 +1,291 @@
 # ⚽ Fut-Insight
 
-Bem-vindo ao **Fut-Insight**, uma aplicação desenvolvida para análise, organização e acompanhamento de desempenho no universo do futebol virtual, com foco em elenco, partidas, campanhas e estatísticas.
+O **Fut-Insight** é uma aplicação desenvolvida para **controle de elenco, registro de partidas, gerenciamento de campanhas de Weekend League e análise de desempenho no futebol virtual**.
 
-Este projeto foi pensado para funcionar como uma ferramenta prática de controle e análise, permitindo registrar jogos, gerenciar jogadores e acompanhar evolução de desempenho de forma visual e organizada.
+O projeto evoluiu de uma aplicação local para uma estrutura mais completa, contando hoje com:
 
-A aplicação possui estrutura modular para facilitar manutenção, crescimento e criação de novas funcionalidades no futuro.
+- **frontend em React + Vite**
+- **aplicação desktop com Electron**
+- **backend próprio em Node.js**
+- **banco SQLite local**
+- **autenticação com login, registro e sessão por cookie**
+
+Além da utilidade prática, o Fut-Insight também representa minha evolução em desenvolvimento de software, arquitetura de aplicações e organização de código.
 
 ---
 
-## 🚀 Tecnologias Principais
+## 🚀 Stack principal
 
-### Front-end
 - **React**
 - **Vite**
 - **JavaScript**
-
-### Desktop
+- **Material UI**
 - **Electron**
+- **Node.js**
+- **SQLite** (`node:sqlite`)
+- **Node test runner**
 
-### Estilização
-- **CSS**
+---
+
+## 🏗 Arquitetura do projeto
+
+O projeto foi reorganizado para uma estrutura mais profissional, separando frontend, backend, camada desktop e testes.
+
+### Estrutura na raiz
+
+- `src/` → frontend da aplicação
+- `server/` → backend HTTP e persistência local
+- `electron/` → bootstrap da versão desktop
+- `tests/` → testes automatizados
+- `scripts/` → utilitários auxiliares para geração e manipulação de dados
+
+---
+
+## 🎨 Frontend
+
+O frontend foi reorganizado em uma estrutura modular, com separação por domínio de negócio e recursos compartilhados.
+
+### `src/app/`
+Responsável pelo núcleo da aplicação, incluindo:
+
+- bootstrap
+- layout global
+- tema
+- roteamento principal
+
+### `src/features/`
+Módulos organizados por domínio do produto.
+
+Atualmente o projeto possui:
+
+- `auth`
+- `campaigns`
+- `dashboard`
+- `history`
+- `matches`
+- `players`
+- `squad`
+
+### `src/shared/`
+Recursos compartilhados entre diferentes partes do sistema.
+
+Exemplos:
+
+- `api/`
+- `assets/`
+- `components/`
+- `data/`
+- `lib/`
+
+Essa organização facilita manutenção, reaproveitamento e crescimento do projeto.
+
+---
+
+## 🧠 Backend
+
+O backend atual está centralizado em `server/app.mjs` e segue uma proposta simples, direta e funcional.
+
+### Características principais
+
+- servidor HTTP próprio com `node:http`
+- persistência local com SQLite usando `node:sqlite`
+- API REST para os dados do app
+- autenticação com:
+  - registro
+  - login
+  - logout
+  - sessão com cookie `HttpOnly`
+
+O backend funciona como a camada central da aplicação, atendendo tanto a versão web quanto a versão desktop.
+
+---
+
+## 🗄 Banco de dados
+
+O banco de dados local fica em:
+
+- `server/data/fut-insight.sqlite`
+
+Atualmente, o projeto persiste:
+
+- usuários
+- sessões
+- jogadores
+- partidas
+- campanhas
+- times salvos
+
+Todos os dados da aplicação são **isolados por usuário autenticado**, garantindo separação entre contas e maior consistência no fluxo da aplicação.
+
+---
+
+## ✅ Funcionalidades atuais
+
+O Fut-Insight já conta com funcionalidades importantes para uso prático e evolução futura:
+
+- cadastro e edição de jogadores
+- registro e histórico de partidas
+- criação e gerenciamento de campanhas
+- dashboard com estatísticas
+- montagem de elenco
+- autenticação com registro e login
+- proteção de rotas no frontend e no backend
+- exportação e importação de dados
+
+---
+
+## 🔐 Autenticação
+
+O projeto agora possui um fluxo completo de autenticação.
+
+### Registro
+
+- nome
+- email
+- senha
+- confirmação de senha
+- validação de email
+- validação de senha mínima
+- bloqueio de email duplicado
+
+### Login
+
+- validação de credenciais
+- criação de sessão
+- persistência do usuário autenticado no frontend
+
+### Sessão
+
+- rotas privadas protegidas
+- bloqueio de acesso às telas de login e registro para usuários autenticados
+- logout funcional
+
+---
+
+## 📜 Scripts disponíveis
+
+### Desenvolvimento geral
+
+```bash
+npm run dev
+```
+
+### Frontend apenas
+
+```bash
+npm run dev:web
+```
+
+### Backend apenas
+
+```bash
+npm run server
+```
 
 ### Testes
-- **Testes automatizados com arquivos em `tests/`**
 
-### Ferramentas auxiliares
-- **Node.js**
-- **npm**
+```bash
+npm test
+```
 
----
+### Build web
 
-## 📂 Entendendo a Estrutura de Pastas
+```bash
+npm run build
+```
 
-Para trabalhar no projeto com mais segurança, é importante entender o papel de cada pasta.
+### Electron em desenvolvimento
 
-A ideia é manter o código organizado, reaproveitável e fácil de evoluir.
+```bash
+npm run electron:dev
+```
 
----
+### Electron desktop
 
-## 🌲 Raiz do Projeto
-
-### `electron/`
-Contém a estrutura da versão desktop da aplicação usando Electron.
-
-Aqui fica o ponto de entrada da aplicação desktop, responsável por abrir a interface React em uma janela nativa.
-
-### `scripts/`
-Scripts auxiliares usados para gerar, preparar ou manipular dados do projeto.
-
-Exemplo:
-- geração de base de dados
-- importação de jogadores
-- preparação de arquivos auxiliares
-
-### `tests/`
-Contém os testes automatizados do sistema.
-
-Esses testes ajudam a validar regras importantes, utilitários e comportamentos da aplicação.
-
-### `package.json`
-Arquivo principal de configuração do projeto Node.js.
-
-Define:
-- dependências
-- scripts
-- nome do projeto
-- versão
-- comandos de execução e build
-
-### `vite.config.js`
-Arquivo de configuração do Vite.
-
-Responsável por ajustar o comportamento do ambiente de desenvolvimento e build.
-
-### `index.html`
-Arquivo base carregado pelo Vite para renderização da aplicação React.
-
-### `.gitignore`
-Define os arquivos e pastas que não devem ser enviados ao GitHub, como:
-- `node_modules/`
-- `dist/`
-- logs
-- builds geradas automaticamente
+```bash
+npm run electron:start
+```
 
 ---
 
-## 📂 `src/` — Código Fonte Principal
+## 🛠 Como rodar o projeto
 
-Essa é a pasta mais importante do projeto.
+### Pré-requisitos
 
-Ela concentra a aplicação React e segue uma divisão por responsabilidade.
+Antes de começar, você precisa ter instalado:
 
----
+- Node.js 24 ou superior
+- npm
+- Git
 
-### `src/components/`
-Contém os componentes reutilizáveis da interface.
+### Instalação
 
-Exemplos:
-- cards
-- painéis
-- listas
-- blocos visuais de estatísticas
-- elementos de layout
+```bash
+git clone https://github.com/LHRibeiro10/Fut-Insight-.git
+cd Fut-Insight-
+npm install
+```
 
-Regra:
-Componentes devem ser reaproveitáveis e focados em apresentação ou composição visual.
+### Ambiente de desenvolvimento
 
----
+```bash
+npm run dev
+```
 
-### `src/pages/`
-Contém as páginas principais da aplicação.
+A aplicação ficará disponível em:
 
-Cada arquivo representa uma tela do sistema.
+**Frontend**
+- `http://localhost:5173`
 
-Exemplos do projeto:
-- Dashboard
-- Histórico
-- Nova Partida
-- Jogadores
-- Elenco
-- Estatísticas do Elenco
-- Campanhas
+**Backend**
+- `http://127.0.0.1:3001`
 
-Regra:
-As páginas organizam os componentes e a lógica da tela, mas não devem concentrar utilidades genéricas desnecessárias.
+### Build de produção
+
+```bash
+npm run build
+```
 
 ---
 
-### `src/data/`
-Armazena bases de dados locais, seeds ou arquivos auxiliares usados pelo sistema.
+## 🧪 Testes
 
-Exemplos:
-- listas base de jogadores
-- dados iniciais
-- arquivos para preenchimento automático
+Os testes ficam em `tests/` e atualmente cobrem utilitários importantes, como:
 
----
-
-### `src/utils/`
-Funções auxiliares reutilizáveis.
-
-Exemplos:
 - formatação
-- cálculos estatísticos
-- manipulação de dados
-- buscas
-- persistência local
+- busca
+- estatísticas
 
-Regra:
-Tudo que pode ser reutilizado em mais de uma parte do sistema deve ser avaliado para esta pasta.
+Para executar os testes:
 
----
-
-### `src/service/`
-Camada de serviços específicos do projeto.
-
-No caso do Fut-Insight, aqui ficam funcionalidades mais inteligentes ou automatizadas, como:
-- preenchimento automático de dados
-- buscas refinadas
-- tratamento de informações específicas da aplicação
+```bash
+npm test
+```
 
 ---
 
-### `src/theme/`
-Configurações visuais e de tema do projeto.
+## 📌 Observações
 
-Serve para centralizar identidade visual e facilitar ajustes globais na interface.
-
----
-
-### `src/assets/`
-Arquivos estáticos como:
-- logo
-- imagens
-- ícones
-- recursos visuais
+- o projeto usa alias `@` apontando para `src/`
+- a base local SQLite não deve ser versionada
+- o backend serve como API única para as versões web e desktop
 
 ---
 
-### `src/App.jsx`
-Componente principal da aplicação.
+## 🔮 Próximos passos sugeridos
 
-É o ponto central de montagem da interface e distribuição das páginas/componentes.
+Algumas evoluções interessantes para o projeto:
 
-### `src/main.jsx`
-Ponto de entrada da aplicação React.
-
-Responsável por renderizar o `App` na tela.
-
-### `src/index.css` / `src/styles.css`
-Arquivos de estilo globais da aplicação.
+- reset de senha
+- verificação de email
+- melhoria no gerenciamento de sessão
+- testes automatizados para autenticação
+- code splitting adicional para a base grande de jogadores
 
 ---
-
-## ⚙️ O que o sistema faz hoje
-
-O Fut-Insight foi criado para ajudar no acompanhamento e análise de desempenho.
-
-Entre as funcionalidades do projeto, estão:
-
-- cadastro e gerenciamento de jogadores
-- registro de partidas
-- visualização de histórico
-- acompanhamento de campanhas
-- estatísticas de desempenho
-- dashboard resumido
-- preenchimento automático de informações
-- organização visual do elenco
-
----
-
-## 📌 Objetivo do Projeto
-
-O Fut-Insight foi criado para ser uma ferramenta prática de acompanhamento de desempenho, organização de elenco e análise de campanhas, com foco em usabilidade, visão estatística e evolução contínua.
-
-Além de ser útil na prática, o projeto também funciona como parte do portfólio de desenvolvimento, demonstrando organização de código, estrutura de interface e construção de funcionalidades reais.
-
----
-
-## 🔮 Melhorias Futuras
-
-Algumas ideias para evolução do projeto:
-
-filtros avançados de jogadores
-
-gráficos mais completos
-
-comparação entre campanhas
-
-exportação de dados
-
-melhorias de responsividade
-
-integração com banco de dados
-
-autenticação de usuário
-
-sincronização em nuvem
-
-importação e exportação de elenco
-
-refinamento do preenchimento automático
-
----
-
 
 ## 👨‍💻 Autor
 
 Luiz Henrique Ribeiro
 
 Projeto desenvolvido para estudo, prática e evolução em desenvolvimento de software.
-
-## 🔗 Repositório
-
-GitHub:
-https://github.com/LHRibeiro10/Fut-Insight-.git
-
-
-## 🛠 Guia de Instalação
-
-Siga esta ordem para rodar o projeto localmente.
-
----
-
-## 1. Pré-requisitos
-
-Antes de começar, você precisa ter instalado:
-
-- **Node.js** (recomendado: v18 ou superior)
-- **npm**
-- **Git**
-
----
-
-## 2. Clone o repositório
-
-```bash
-git clone https://github.com/LHRibeiro10/Fut-Insight-.git
-cd Fut-Insight-
-
----
-## Como executar o projeto
-
-1. Clone o repositório
-git clone https://github.com/LHRibeiro10/Fut-Insight-.git
-2. Acesse a pasta
-cd Fut-Insight-
-3. Instale as dependências
-npm install
-4. Rode o projeto
-npm run dev
-Build do projeto
-
-Para gerar a versão de produção:
-
-npm run build
-
