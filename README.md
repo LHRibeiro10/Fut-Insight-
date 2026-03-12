@@ -284,6 +284,79 @@ Algumas evoluções interessantes para o projeto:
 
 ---
 
+<<<<<<< HEAD
+=======
+### `src/assets/`
+Arquivos estáticos como:
+- logo
+- imagens
+- ícones
+- recursos visuais
+
+---
+
+### `src/App.jsx`
+Componente principal da aplicação.
+
+É o ponto central de montagem da interface e distribuição das páginas/componentes.
+
+### `src/main.jsx`
+Ponto de entrada da aplicação React.
+
+Responsável por renderizar o `App` na tela.
+
+### `src/index.css` / `src/styles.css`
+Arquivos de estilo globais da aplicação.
+
+---
+
+## ⚙️ O que o sistema faz hoje
+
+O Fut-Insight foi criado para ajudar no acompanhamento e análise de desempenho.
+
+Entre as funcionalidades do projeto, estão:
+
+- cadastro e gerenciamento de jogadores
+- registro de partidas
+- visualização de histórico
+- acompanhamento de campanhas
+- estatísticas de desempenho
+- dashboard resumido
+- preenchimento automático de informações
+- organização visual do elenco
+
+---
+
+## 📌 Objetivo do Projeto
+
+O Fut-Insight foi criado para ser uma ferramenta prática de acompanhamento de desempenho, organização de elenco e análise de campanhas, com foco em usabilidade, visão estatística e evolução contínua.
+
+Além de ser útil na prática, o projeto também funciona como parte do portfólio de desenvolvimento, demonstrando organização de código, estrutura de interface e construção de funcionalidades reais.
+
+---
+
+## 🔮 Melhorias Futuras
+
+Algumas ideias para evolução do projeto:
+
+filtros avançados de jogadores
+
+gráficos mais completos
+
+exportação de dados
+
+melhorias de responsividade
+
+sincronização em nuvem
+
+importação e exportação de elenco
+
+refinamento do preenchimento automático
+
+---
+
+
+>>>>>>> d8976e093cc56569ad83328a5a66cf5c84e2d5de
 ## 👨‍💻 Autor
 
 Luiz Henrique Ribeiro
