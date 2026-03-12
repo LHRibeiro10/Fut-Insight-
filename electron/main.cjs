@@ -68,7 +68,7 @@ function createMainWindow() {
     autoHideMenuBar: true,
     backgroundColor: "#070b12",
     title: "FUT Insight 26",
-    icon: path.join(__dirname, "../build/icon.ico"),
+    icon: path.join(__dirname, "../build/fut_insight_26.ico"),
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,

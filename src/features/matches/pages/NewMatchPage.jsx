@@ -25,6 +25,7 @@ import { useEffect, useMemo, useState } from "react";
 import FutCard from "@/shared/components/cards/FutCard";
 import SectionCard from "@/shared/components/cards/SectionCard";
 import { getCampaignSummary } from "@/shared/lib/campaignStats";
+import { getResultColor, getResultLabel } from "@/shared/lib/format";
 import { getPlayerSnapshot } from "@/shared/lib/stats";
 
 function createRow(playerId = "") {
@@ -53,6 +54,22 @@ const formationOptions = [
   "5-4-1",
 ];
 
+function getMatchResult(goalsFor, goalsAgainst) {
+  const safeGoalsFor = Number(goalsFor || 0);
+  const safeGoalsAgainst = Number(goalsAgainst || 0);
+
+  if (safeGoalsFor > safeGoalsAgainst) return "win";
+  if (safeGoalsFor < safeGoalsAgainst) return "loss";
+  return "draw";
+}
+
+function clampRating(value) {
+  const safeValue = Number(value);
+
+  if (Number.isNaN(safeValue)) return 0;
+  return Math.min(10, Math.max(0, safeValue));
+}
+
 export default function NewMatchPage({
   players = [],
   matches = [],
@@ -78,7 +95,6 @@ export default function NewMatchPage({
     date: new Date().toISOString().slice(0, 10),
     campaignId: activeCampaign?.id || "",
     savedTeamId: "",
-    result: "win",
     goalsFor: 0,
     goalsAgainst: 0,
     formationUsed: "4-4-2",
@@ -128,6 +144,10 @@ export default function NewMatchPage({
   const totalGoalsFromRows = useMemo(
     () => form.rows.reduce((acc, row) => acc + Number(row.goals || 0), 0),
     [form.rows]
+  );
+  const matchResult = useMemo(
+    () => getMatchResult(form.goalsFor, form.goalsAgainst),
+    [form.goalsAgainst, form.goalsFor]
   );
 
   const hasScoreMismatch = totalGoalsFromRows !== Number(form.goalsFor || 0);
@@ -263,14 +283,19 @@ export default function NewMatchPage({
       id: crypto.randomUUID(),
       campaignId: form.campaignId,
       date: form.date,
-      result: form.result,
+      result: matchResult,
       goalsFor: Number(form.goalsFor),
       goalsAgainst: Number(form.goalsAgainst),
       formationUsed: form.formationUsed,
       rival: form.rival,
       rankGoal: Number(form.rankGoal),
       notes: form.notes,
-      players: form.rows.filter((row) => row.playerId),
+      players: form.rows
+        .filter((row) => row.playerId)
+        .map((row) => ({
+          ...row,
+          rating: clampRating(row.rating),
+        })),
     });
 
     setMessage("Partida salva com sucesso.");
@@ -280,7 +305,6 @@ export default function NewMatchPage({
       date: new Date().toISOString().slice(0, 10),
       campaignId: selectedCampaign?.id || activeCampaign?.id || "",
       savedTeamId: "",
-      result: "win",
       goalsFor: 0,
       goalsAgainst: 0,
       formationUsed: "4-4-2",
@@ -471,16 +495,27 @@ export default function NewMatchPage({
             </Grid>
 
             <Grid item xs={12} md={2}>
-              <TextField
-                select
-                label="Resultado"
-                value={form.result}
-                onChange={(e) => setForm({ ...form, result: e.target.value })}
-                fullWidth
+              <Stack
+                spacing={0.75}
+                justifyContent="center"
+                sx={{
+                  height: "56px",
+                  px: 1.5,
+                  borderRadius: 1,
+                  border: "1px solid rgba(255,255,255,0.23)",
+                  backgroundColor: "rgba(255,255,255,0.02)",
+                }}
               >
-                <MenuItem value="win">Vitória</MenuItem>
-                <MenuItem value="loss">Derrota</MenuItem>
-              </TextField>
+                <Typography variant="caption" color="text.secondary">
+                  Resultado automatico
+                </Typography>
+                <Chip
+                  size="small"
+                  label={getResultLabel(matchResult)}
+                  color={getResultColor(matchResult)}
+                  sx={{ width: "fit-content" }}
+                />
+              </Stack>
             </Grid>
 
             <Grid item xs={12} md={4}>
@@ -702,9 +737,10 @@ export default function NewMatchPage({
                         value={row.rating}
                         onChange={(e) =>
                           updateRow(row.id, {
-                            rating: Math.max(0, Number(e.target.value) || 0),
+                            rating: clampRating(e.target.value),
                           })
                         }
+                        inputProps={{ min: 0, max: 10, step: 0.1 }}
                         fullWidth
                       />
                     </Grid>
@@ -865,7 +901,7 @@ export default function NewMatchPage({
             </Typography>
 
             <Typography variant="body2" color="text.secondary">
-              Resultado: {form.result === "win" ? "Vitória" : "Derrota"}
+              Resultado: {getResultLabel(matchResult)}
             </Typography>
 
             <Typography variant="body2" color="text.secondary">
